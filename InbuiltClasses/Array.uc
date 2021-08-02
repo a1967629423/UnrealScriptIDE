@@ -70,3 +70,7 @@ native final function int Find( name propertyName, object  value );
  * @param	sortDelegate - The method to use for sorting.
  */
 native final function Sort( delegate sortDelegate );
+
+native final function Test() {
+	
+}

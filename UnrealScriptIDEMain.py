@@ -125,8 +125,8 @@ class UnrealScriptIDEMain(USData.UnrealData, sublime_plugin.EventListener):
     # def on_close(self, view):
     #     pass
     # gets called when a file is saved. re-parse the current file.
-    def on_post_save(self, view, async=False):
-        if ST3 and not async:
+    def on_post_save(self, view, _async=False):
+        if ST3 and not _async:
             return
         if is_unrealscript_file():
             filename = view.file_name()
@@ -138,13 +138,13 @@ class UnrealScriptIDEMain(USData.UnrealData, sublime_plugin.EventListener):
                     self.on_activated(view)
 
     def on_post_save_async(self, view):
-        self.on_post_save(view, async=True)
+        self.on_post_save(view, _async=True)
 
     # start parsing the active file when a tab becomes active
     # at first startup, scan for all classes and save them to _classes
     # at later startups, load _classes from cache.
-    def on_activated(self, view, async=False):
-        if ST3 and not async:
+    def on_activated(self, view, _async=False):
+        if ST3 and not _async:
             return
         if is_unrealscript_file():
             self.clear()    # empty the completions list, so that we only get the relevant ones.
@@ -189,11 +189,11 @@ class UnrealScriptIDEMain(USData.UnrealData, sublime_plugin.EventListener):
                     self.load_completions_for_file(file_name)
 
     def on_activated_async(self, view):
-        self.on_activated(view, async=True)
+        self.on_activated(view,True)
 
     # This function is called when auto-complete pop-up box is displayed.
     # Used to get context sensitive suggestions
-    def on_query_completions(self, view, prefix, locations, async=False):
+    def on_query_completions(self, view, prefix, locations, _async=False):
         if is_unrealscript_file():
             selection_region = view.sel()[0]
             line = view.line(selection_region)
@@ -364,8 +364,8 @@ class UnrealScriptIDEMain(USData.UnrealData, sublime_plugin.EventListener):
                     self.b_did_autocomplete = True
 
     # remove auto completion and insert dynamic snippet instead, just after auto completion
-    def on_modified(self, view, async=False):
-        if ST3 and not async:
+    def on_modified(self, view, _async=False):
+        if ST3 and not _async:
             return
         if is_unrealscript_file():
             # if the helper panel has just been displayed, save the line number
@@ -386,7 +386,7 @@ class UnrealScriptIDEMain(USData.UnrealData, sublime_plugin.EventListener):
                 sublime.set_timeout(lambda: self.insert_dynamic_snippet_for_completion(view, self.completion_class), 0)
 
     def on_modified_async(self, view):
-        self.on_modified(view, async=True)
+        self.on_modified(view, _async=True)
 
     # if there is a dynamic snippet available for the just added word,
     # remove the last word and insert the snippet instead
